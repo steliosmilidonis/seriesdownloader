@@ -12,6 +12,6 @@ print urls
 
 payload={'username':'admin','password':'openmediavault'}
     s.post('http://192.168.0.29:9666/api/login', data=payload)
-    payload={'name':'xxx mag','links':['http://depositfiles.com/files/6u8gr6yx5']}
+    payload={'name':'series','links':['http://depositfiles.com/files/6u8gr6yx5']}
     
    rs = requests.post('http://192.168.0.29:9666/api/addPackage', data=payloadJSON)
