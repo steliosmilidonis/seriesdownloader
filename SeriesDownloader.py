@@ -1,17 +1,37 @@
 #!/usr/bin/python
-import re
+
+import requests
+import json
 import urllib
+import lxml.html
+import re
+count = 1
+dwnldr = "uploaded"
+testwoed = "Paul"
+my_list = list()
+my_list2 = list()
+while (count < 11):
+    print 'This is page:', count
 
-link = "http://rlsbb.com/page/2/"
-f = urllib.urlopen(link)
-myfile = f.read()
+    connection = urllib.urlopen('http://rlsbb.com/page/%d' % count)
 
-urls = re.findall('http[s]?://www.uploadable.ch(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', myfile)
+    dom = lxml.html.fromstring(connection.read())
 
-print urls
+    for link in dom.xpath('//a/@href'):
+      my_list.append(link)
+      my_list2.append([s for s in my_list if dwnldr in s])
 
-payload={'username':'admin','password':'openmediavault'}
-    s.post('http://192.168.0.29:9666/api/login', data=payload)
-    payload={'name':'series','links':['http://depositfiles.com/files/6u8gr6yx5']}
-    
-   rs = requests.post('http://192.168.0.29:9666/api/addPackage', data=payloadJSON)
+
+    count = count + 1
+
+print s for s in my_list if dwnldr in s
+
+def send_to_pyload(link):
+    payload = {'username': 'admin', 'password': 'openmediavault'}
+    with requests.session() as s:
+        s.post('http://192.168.0.29:8888/api/login', data=payload)
+    payload = {'name': 'series', 'links': [link]}
+    payloadJSON = {k: json.dumps(v) for k, v in payload.items()}
+    r = s.post('http://192.168.0.29:8888/api/adddPackage', data=payloadJSON)
+    print r.text
+    return
